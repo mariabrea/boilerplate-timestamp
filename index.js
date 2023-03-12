@@ -48,20 +48,25 @@ app.get("/api/:date", function (req, res) {
   //   }
   // }
   let date;
-  if (requestedDate.includes("-")) { //valid date
-    console.log("date");
-    date = new Date(requestedDate);
-  } else{ //timestamp
-    console.log("timestamp");
-    date= new Date(parseInt(requestedDate));
-  }
-  const unixDate = date.getTime();
-  const utcDate = date.toUTCString();
-  if (!unixDate || !utcDate){
+  if (!new Date(requestedDate) && !new Date(parseInt(requestedDate))){
     res.json({ error : "Invalid Date" });
-  } else{
-    res.json({"unix": unixDate, "utc": utcDate});
+  } else {
+    if (requestedDate.includes("-")) { //valid date
+      console.log("date");
+      date = new Date(requestedDate);
+    } else{ //timestamp
+      console.log("timestamp");
+      date= new Date(parseInt(requestedDate));
+    }
+    const unixDate = date.getTime();
+    const utcDate = date.toUTCString();
+    if (!unixDate || !utcDate){
+      res.json({ error : "Invalid Date" });
+    } else{
+      res.json({"unix": unixDate, "utc": utcDate});
+    }
   }
+  
 });
 
 app.get("/api", function (req, res) {
@@ -71,10 +76,10 @@ app.get("/api", function (req, res) {
 
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
-  console.log('Your app is listening on port ' + listener.address().port);
-});
-
-// app.listen(process.env.PORT || 3000, function(){
-//   console.log("Server started on port 3000.")
+// var listener = app.listen(process.env.PORT, function () {
+//   console.log('Your app is listening on port ' + listener.address().port);
 // });
+
+app.listen(process.env.PORT || 3000, function(){
+  console.log("Server started on port 3000.")
+});
