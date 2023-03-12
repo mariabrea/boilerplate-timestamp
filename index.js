@@ -26,45 +26,28 @@ app.get("/api/hello", function (req, res) {
 
 app.get("/api/:date", function (req, res) {
   const requestedDate = req.params.date;
-  // if (requestedDate.includes("-")) { //valid date
-  //   console.log("date");
-  //   const dateGMT = new Date(requestedDate);
-  //   const unixDate = dateGMT.getTime();
-  //   const utcDate = dateGMT.toUTCString();
-  //   if (!unixDate || !utcDate){
-  //     res.json({ error : "Invalid Date" });
-  //   } else{
-  //     res.json({"unix": unixDate, "utc":utcDate});
-  //   }
-  // } else{ //timestamp
-  //   console.log("timestamp");
-  //   const dateUTC= new Date(parseInt(requestedDate));
-  //   const unixDate = dateUTC.getTime();
-  //   const utcDate = dateUTC.toUTCString();
-  //   if (!unixDate || !utcDate){
-  //     res.json({ error : "Invalid Date" });
-  //   } else{
-  //     res.json({"unix": unixDate, "utc": utcDate});
-  //   }
-  // }
   let date;
-  if (!new Date(requestedDate) && !new Date(parseInt(requestedDate))){
+  console.log(new Date(requestedDate));
+  console.log(new Date(parseInt(requestedDate)));
+  if (new Date(requestedDate) == "Invalid Date" && new Date(parseInt(requestedDate)) == "Invalid Date"){
     res.json({ error : "Invalid Date" });
   } else {
-    if (requestedDate.includes("-")) { //valid date
+    console.log("not invalid")
+    if (new Date(requestedDate) != "Invalid Date") {
       console.log("date");
       date = new Date(requestedDate);
-    } else{ //timestamp
+      
+    } else {
       console.log("timestamp");
       date= new Date(parseInt(requestedDate));
     }
     const unixDate = date.getTime();
     const utcDate = date.toUTCString();
-    if (!unixDate || !utcDate){
-      res.json({ error : "Invalid Date" });
-    } else{
+    // if (!unixDate || !utcDate){
+    //   res.json({ error : "Invalid Date" });
+    // } else{
       res.json({"unix": unixDate, "utc": utcDate});
-    }
+    // }
   }
   
 });
